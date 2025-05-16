@@ -81,16 +81,20 @@
 	@import 'layout/menu';
 
 /* Banner WebP support - fix implementation */
-#banner {
-  /* Make sure the banner is visible */
-  opacity: 1 !important;
-  /* Fallback for browsers that don't support WebP */
-  background-image: url('../images/banner-resized.jpg') !important;
+body.home #banner {
+  /* Only apply default banner to home page */
+  background-image: url('../images/banner-resized.jpg');
 }
 
-/* For browsers that support WebP */
-.webp #banner {
-  background-image: url('../images/banner.webp') !important;
+.webp body.home #banner {
+  background-image: url('../images/banner.webp');
+}
+
+/* Make sure banners are always visible */
+#banner {
+  opacity: 1 !important;
+  background-position: center;
+  background-size: cover;
 }
 
 /* Load smaller images on mobile */
