@@ -1,31 +1,61 @@
-// A much safer version that only handles regular images, not CSS backgrounds
 document.addEventListener('DOMContentLoaded', function() {
-  // Only proceed if WebP is supported
+  // Tag all images that will need WebP versions
+  var imagesToUpdate = document.querySelectorAll('img:not([src$=".svg"]):not([src$=".webp"]):not([src$=".avif"])');
+  imagesToUpdate.forEach(function(img) {
+    if (img.src && (img.src.endsWith('.jpg') || img.src.endsWith('.jpeg') || img.src.endsWith('.png'))) {
+      var parent = img.closest('.image');
+      if (parent) {
+        parent.setAttribute('data-webp', 'pending');
+      }
+    }
+  });
+
+  // Process WebP replacements only when browser supports it
   if (document.documentElement.classList.contains('webp')) {
-    // Only convert regular <img> tags, not background images
-    const images = document.querySelectorAll('img:not([src$=".svg"]):not([src$=".webp"]):not([src$=".avif"])');
-    
-    // Replace each image source with WebP version if it exists
-    images.forEach(img => {
-      const src = img.getAttribute('src');
-      if (src && (src.endsWith('.jpg') || src.endsWith('.jpeg') || src.endsWith('.png'))) {
+    // Handle <img> tags
+    imagesToUpdate.forEach(function(img) {
+      if (img.src && (img.src.endsWith('.jpg') || img.src.endsWith('.jpeg') || img.src.endsWith('.png'))) {
         // Create WebP path
-        const webpSrc = src.substring(0, src.lastIndexOf('.')) + '.webp';
+        var webpSrc = img.src.substring(0, img.src.lastIndexOf('.')) + '.webp';
         
-        // Create a pictureElement to wrap the image with WebP source
-        const picture = document.createElement('picture');
-        const source = document.createElement('source');
-        source.srcset = webpSrc;
-        source.type = 'image/webp';
-        
-        // Clone original attributes
-        const imgClone = img.cloneNode(true);
-        
-        // Replace the image with picture element
-        picture.appendChild(source);
-        picture.appendChild(imgClone);
-        img.parentNode.replaceChild(picture, img);
+        // Handle picture element creation
+        var parent = img.parentNode;
+        if (parent.tagName.toLowerCase() !== 'picture') {
+          // Create picture element
+          var picture = document.createElement('picture');
+          var source = document.createElement('source');
+          source.srcset = webpSrc;
+          source.type = 'image/webp';
+          
+          // Replace img with picture
+          parent.insertBefore(picture, img);
+          picture.appendChild(source);
+          picture.appendChild(img);
+        }
+      }
+    });
+    
+    // Handle CSS background images
+    document.querySelectorAll('.banner, .spotlight, [style*="background-image"]').forEach(function(el) {
+      var style = window.getComputedStyle(el).backgroundImage;
+      if (style && (style.includes('.jpg') || style.includes('.jpeg') || style.includes('.png'))) {
+        // Extract the image URL
+        var match = style.match(/url\(['"]?([^'"")]+)['"]?\)/);
+        if (match && match[1]) {
+          var imgUrl = match[1];
+          var webpUrl = imgUrl.substring(0, imgUrl.lastIndexOf('.')) + '.webp';
+          
+          // Apply WebP background
+          el.style.backgroundImage = 'url(' + webpUrl + ')';
+        }
       }
     });
   }
+
+  // Mark all WebP operations as complete (with a slight delay to ensure transitions work)
+  setTimeout(function() {
+    document.querySelectorAll('[data-webp="pending"]').forEach(function(el) {
+      el.setAttribute('data-webp', 'complete');
+    });
+  }, 100);
 });

@@ -16,7 +16,18 @@
 	<section id="banner" class="{{ page.banner_color }}">
 		<div class="inner">
 			<span class="image">
-				<img src="{{ site.baseurl }}/{{ page.image }}" alt="">
+				{% if page.image %}
+				<div class="image main">
+				  <picture>
+				    {% if page.image_webp %}
+				    <source srcset="{{ site.baseurl }}/{{ page.image_webp }}" type="image/webp">
+				    {% else %}
+				    <source srcset="{{ site.baseurl }}/{{ page.image | replace: '.jpeg', '.webp' | replace: '.jpg', '.webp' | replace: '.png', '.webp' }}" type="image/webp">
+				    {% endif %}
+				    <img src="{{ site.baseurl }}/{{ page.image }}" alt="{{ page.title }}">
+				  </picture>
+				</div>
+				{% endif %}
 			</span>
 			<header class="major">
 

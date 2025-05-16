@@ -80,24 +80,26 @@
 	@import 'layout/wrapper';
 	@import 'layout/menu';
 
-/* Banner WebP support - since you confirmed these images exist */
+/* Banner WebP support - fix implementation */
 #banner {
+  /* Make sure the banner is visible */
+  opacity: 1 !important;
   /* Fallback for browsers that don't support WebP */
-  background-image: url('../images/banner-resized.jpg');
+  background-image: url('../images/banner-resized.jpg') !important;
 }
 
 /* For browsers that support WebP */
 .webp #banner {
-  background-image: url('../images/banner.webp');
+  background-image: url('../images/banner.webp') !important;
 }
 
 /* Load smaller images on mobile */
 @media only screen and (max-width: 768px) {
   #banner {
-    background-image: url('../images/banner-mobile.jpg');
+    background-image: url('../images/banner-mobile.jpg') !important;
   }
   .webp #banner {
-    background-image: url('../images/banner-mobile.webp');
+    background-image: url('../images/banner-mobile.webp') !important;
   }
 }
 
@@ -110,3 +112,23 @@
 .tiles article {
   background-color: #f6f6f6;
 }
+
+body {
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+}
+
+.page-loaded body {
+	opacity: 1;
+}
+
+/* Preload state for images */
+html:not(.images-loaded) .image img,
+html:not(.images-loaded) .image picture img {
+	opacity: 0;
+}
+
+html.images-loaded .image img,
+html.images-loaded .image picture img {
+	opacity: 1;
+	transition: opacity 0.3s ease-in-out; }

@@ -7,11 +7,20 @@
   {% for tile in tiles limit:site.tiles-count %}
   <article>
     <span class="image">
-      {% if tile.image %}<img src="{{ tile.image }}" alt="{{ tile.title }}" />{% endif %}
-      {% if tile.imageUrl %}<img src="{{ tile.imageUrl }}" alt="{{ tile.title }}" />{% endif %}
+      {% if tile.image %}
+        <picture>
+          {% assign webp_path = tile.image | replace: '.jpeg', '.webp' | replace: '.jpg', '.webp' | replace: '.png', '.webp' %}
+          <!-- WebP support for browsers that support it -->
+          <source srcset="{{ webp_path | relative_url }}" type="image/webp">
+          <img src="{{ tile.image | relative_url }}" alt="{{ tile.title }}" />
+        </picture>
+      {% endif %}
+      {% if tile.imageUrl %}
+        <img src="{{ tile.imageUrl }}" alt="{{ tile.title }}" />
+      {% endif %}
     </span>
     <header class="major">
-      <h3><a href="{{ tile.url  | relative_url }}" class="link">{{ tile.title }}</a></h3>
+      <h3><a href="{{ tile.url | relative_url }}" class="link">{{ tile.title }}</a></h3>
       <p>{{ tile.description }}</p>
     </header>
   </article>
