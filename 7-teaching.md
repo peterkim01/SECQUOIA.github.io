@@ -7,7 +7,8 @@ nav-menu: true
 banner_color: style6
 ---
 
-<!-- markdownlint-disable MD033 -->
+<!-- Main -->
+<div id="main">
 
 <!-- One -->
 <section id="overview">
@@ -26,9 +27,12 @@ banner_color: style6
 
 <!-- Two -->
 <section id="topics" class="spotlights">
- <section id="philosophy">
+ <section>
   <a href="teaching/philosophy.html" class="image">
-   <img src="{% link assets/images/notebook.jpeg %}" alt="" data-position="bottom center" />
+   <picture>
+    <source srcset="assets/images/notebook.webp" type="image/webp">
+    <img src="assets/images/notebook.jpeg" alt="Teaching Philosophy" data-position="center center" />
+   </picture>
   </a>
   <div class="content">
    <div class="inner">
@@ -44,10 +48,12 @@ banner_color: style6
    </div>
   </div>
  </section>
-
- <section id="courses">
+ <section>
   <a href="teaching/courses.html" class="image">
-   <img src="{% link assets/images/books2.jpeg %}" alt="" data-position="center center" />
+   <picture>
+    <source srcset="assets/images/books2.webp" type="image/webp">
+    <img src="assets/images/books2.jpeg" alt="Courses" data-position="top center" />
+   </picture>
   </a>
   <div class="content">
    <div class="inner">
@@ -68,7 +74,9 @@ banner_color: style6
 <section>
  <div class="inner">
   <ul class="actions">
-   <li><a href="/#launch" class="button icon fa-arrow-left">Go back to launch page</a></li>
+   <li><a href="/#launch" class="button icon fa-arrow-left">Back to home</a></li>
   </ul>
  </div>
 </section>
+
+</div>

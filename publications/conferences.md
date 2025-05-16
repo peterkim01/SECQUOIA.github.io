@@ -1,7 +1,7 @@
 ---
 layout: mdpage
 title: Conference Articles
-image: assets/images/article.png
+image: assets/images/book.png
 description: 'Conference Papers'
 nav-menu: false
 show_tile: false
